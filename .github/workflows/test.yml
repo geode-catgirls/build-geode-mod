@@ -87,7 +87,7 @@ jobs:
             --arg mod_name "Example Mod" \
             --arg mod_version "0.0.0" \
             --arg mod_description "The example Geode mod!" \
-            --argjson developer "Geode Team" \
+            --arg developer "Geode Team" \
             '.geode = $geode_version |
             .id = $mod_id |
             .name = $mod_name |
