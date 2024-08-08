@@ -24,16 +24,12 @@ jobs:
       run: |
         # Get latest Geode version
         if [ ${{ env.test-geode-nightly }} == true ]; then
-          echo "Getting latest version specified in nightly build"
           GEODE_VERSION=$(curl -s https://raw.githubusercontent.com/geode-sdk/geode/nightly/VERSION)
         else
-          echo "Getting latest version"
           GEODE_VERSION=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/geode-sdk/geode/releases/latest | jq -r .tag_name)
         fi
 
         GEODE_VERSION=${GEODE_VERSION#v}
-        echo "Version: $GEODE_VERSION"
-        echo "Type: ${{ env.test-geode-nightly == true && 'nightly' || 'latest' }}"
         echo "geode_version=$GEODE_VERSION" >> $GITHUB_OUTPUT
 
   build:
@@ -43,18 +39,14 @@ jobs:
         config:
         - name: Windows
           os: windows-latest
-
         - name: macOS
           os: macos-latest
-
         - name: iOS
           os: macos-latest
           target: iOS
-
         - name: Android32
           os: ubuntu-latest
           target: Android32
-
         - name: Android64
           os: ubuntu-latest
           target: Android64
@@ -68,7 +60,7 @@ jobs:
 
       - uses: actions/checkout@v4
         with:
-          repository: geode-catgirls/example-mod
+          repository: geode-sdk/example-mod
           path: ${{ env.test-mod-path }}
 
       - name: Modify Example Mod Files
@@ -91,18 +83,17 @@ jobs:
           # Replace the placeholders
           updated_mod_json=$(echo "$mod_json" | jq \
             --arg geode_version "$GEODE_VERSION" \
-            --arg mod_id "geode-catgirls.example-mod" \
+            --arg mod_id "geode.example" \
             --arg mod_name "Example Mod" \
             --arg mod_version "0.0.0" \
-            --arg mod_description "The Geode mod loader example!" \
-            --argjson developers '["Geode Team", "Geode Catgirls Team"]' \
-            'del(.developer) |
-            .geode = $geode_version |
+            --arg mod_description "The example Geode mod!" \
+            --argjson developer "Geode Team" \
+            '.geode = $geode_version |
             .id = $mod_id |
             .name = $mod_name |
             .version = $mod_version |
             .description = $mod_description |
-            .developers = $developers')
+            .developer = $developer')
 
           # Write updated_mod_json variable contents to mod.json file
           echo $updated_mod_json > $mod_json_path
@@ -117,7 +108,6 @@ jobs:
       - name: Build the mod
         uses: ./
         with:
-          gh-pat: ${{ secrets.GH_PAT }} 
           sdk: ${{ env.geode-sdk-type }}
           build-config: RelWithDebInfo
           path: ${{ env.test-mod-path }}
