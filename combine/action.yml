@@ -22,7 +22,7 @@ runs:
     - name: Download CLI
       uses: robinraju/release-downloader@v1.10
       with:
-        repository: geode-catgirls/cli
+        repository: geode-sdk/cli
         latest: ${{ inputs.cli == 'latest' }}
         tag: ${{ inputs.cli != 'latest' && inputs.cli || '' }}
         tarBall: false
