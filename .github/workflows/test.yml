@@ -119,7 +119,6 @@ jobs:
         with:
           gh-pat: ${{ secrets.GH_PAT }} 
           sdk: ${{ env.geode-sdk-type }}
-          cli: nightly
           build-config: RelWithDebInfo
           path: ${{ env.test-mod-path }}
           combine: true

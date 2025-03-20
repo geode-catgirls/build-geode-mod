@@ -197,8 +197,8 @@ runs:
     - name: Setup CLI
       uses: geode-sdk/cli/.github/actions/setup@main
       with:
-        version: ${{ inputs.cli }}
-        platform: ${{ steps.platform.outputs.target_id }}
+        #version: ${{ inputs.cli }}
+        version: nightly
 
     - name: Download Geode SDK
       if: steps.platform.outputs.target_id == 'ios'

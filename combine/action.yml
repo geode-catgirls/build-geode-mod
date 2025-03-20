@@ -23,8 +23,9 @@ runs:
       uses: robinraju/release-downloader@v1.10
       with:
         repository: geode-sdk/cli
-        latest: ${{ inputs.cli == 'latest' }}
-        tag: ${{ inputs.cli != 'latest' && inputs.cli || '' }}
+        #latest: ${{ inputs.cli == 'latest' }}
+        #tag: ${{ inputs.cli != 'latest' && inputs.cli || '' }}
+        tag: nightly
         tarBall: false
         zipBall: false
         fileName: "*-linux.zip"
